@@ -199,6 +199,32 @@ Configuración en SonarQube:
   Quality Gate no puede poner un límite de complejidad por método, pero sí puede rechazar
   cualquier Code Smell nuevo, y un método de más de 10 genera uno.
 
+## Comparación antes / después
+
+| Métrica | Antes (Parte 1) | Después (Parte 2) |
+|---|---|---|
+| Complejidad ciclomática de `calcularCosto()` | 20 | 5 (75 % menos) |
+| Complejidad máxima de un método de la lógica de envío | 20 | 5 (orquestador); 4 cada estrategia |
+| Cobertura de ramas de la lógica de envío | 18.4 % (7/38) | 100 % (32/32) |
+| Cobertura de líneas de la lógica de envío | 23.8 % (10/42) | 100 % (48/48) |
+| Pruebas | 2 | 31 |
+| Code Smells | [COMPLETAR] | [COMPLETAR] |
+| Quality Gate | No configurado | [COMPLETAR: Passed o Failed] |
+
+[COMPLETAR: una o dos oraciones interpretando el resultado del Quality Gate. Si pasó: qué
+condiciones se cumplieron. Si falló: qué condición falló y por qué.]
+
+La reducción de complejidad supera el 50 % que pide la guía y la cobertura de ramas sube 81.6
+puntos, muy por encima de los 15 pedidos. El orquestador no baja de 5 a propósito, por las reglas
+transversales explicadas en la Decisión de diseño 4.
+
+## Capturas
+
+![Dashboard inicial](docs/sonar-dashboard-inicial.png)
+![JaCoCo inicial](docs/jacoco-inicial.png)
+![Dashboard final](docs/sonar-dashboard-final.png)
+![JaCoCo final](docs/jacoco-final.png)
+
 ## Cómo ejecutar
 
 ```bash
@@ -214,6 +240,17 @@ mvn clean verify sonar:sonar -Dsonar.token=TOKEN   # pruebas + JaCoCo + análisi
 - Java (JDK 26, release 21), Apache Maven 3.9
 - SonarQube Community Build (Docker), SonarScanner for Maven, JaCoCo, JUnit 5
 - Git, GitHub
+
+## Conclusiones
+
+Las métricas sirvieron para diagnosticar, no como meta. La complejidad ciclomática de 20 no solo
+señalaba un método difícil de leer: explicaba por qué dos pruebas cubrían apenas el 18 % de las
+ramas, y apuntaba a la causa, cuatro algoritmos mezclados en un solo método. Elegir el patrón por
+la naturaleza real de los condicionales, sin estado y sin orden, llevó a Strategy y redujo la
+complejidad sin cambiar el comportamiento, como lo confirmó la comparación de 3600 casos. Después,
+las pruebas nuevas subieron la cobertura porque cada una verifica un valor en un límite, no porque
+se buscara el número. Por último, configurar el Quality Gate mostró que un umbral es una decisión
+de diseño que hay que justificar: 10 y 70 % son exigentes sin premiar las pruebas vacías.
 
 ## Referencias
 
