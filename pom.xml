@@ -15,6 +15,15 @@
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.14.4</junit.version>
+        <jacoco.version>0.8.15</jacoco.version>
+
+        <!-- Configuración del análisis. SonarScanner for Maven lee estas propiedades del
+             pom.xml (no lee sonar-project.properties). La clave por defecto ya sería
+             groupId:artifactId = com.universidad:envios-service; se deja explícita. -->
+        <sonar.projectKey>com.universidad:envios-service</sonar.projectKey>
+        <sonar.projectName>Envios Service</sonar.projectName>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencyManagement>
@@ -50,6 +59,38 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.6</version>
+            </plugin>
+
+            <!-- JaCoCo: prepare-agent instrumenta las pruebas; report genera
+                 target/site/jacoco/jacoco.xml (lo lee SonarQube) e index.html.
+                 0.8.15 es la primera versión con soporte oficial para Java 26. -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Declarar el plugin con versión fija hace que "mvn sonar:sonar" resuelva este
+                 plugin (el prefijo "sonar" no está en los grupos por defecto de Maven). -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>5.8.0.7211</version>
             </plugin>
         </plugins>
     </build>
