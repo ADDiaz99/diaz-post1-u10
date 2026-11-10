@@ -63,7 +63,7 @@ mismas propiedades están también en la sección `<properties>` del `pom.xml`.
 | Complejidad ciclomática de `calcularCosto()` | 20 |
 | Cobertura de líneas de `ServicioCalculoEnvio` | 23.8 % (10 de 42 líneas) |
 | Cobertura de ramas de `ServicioCalculoEnvio` | 18.4 % (7 de 38 ramas) |
-| Code Smells reportados | [COMPLETAR con el valor de tu dashboard] |
+| Code Smells reportados | 20.0 % (2 de 10) |
 
 ### Interpretación
 
@@ -100,10 +100,6 @@ mientras que la complejidad muestra que el método mezcla cuatro algoritmos dist
 problema es de estructura. La complejidad cognitiva también es alta por el anidamiento, pero
 mide legibilidad, no cantidad de casos a probar, que es lo que este laboratorio busca mejorar.
 
-### Capturas del análisis inicial
-
-![Dashboard SonarQube](docs/sonar-dashboard-inicial.png)
-![Reporte JaCoCo](docs/jacoco-inicial.png)
 
 ## Parte 2: refactorización guiada por métricas
 
@@ -208,22 +204,13 @@ Configuración en SonarQube:
 | Cobertura de ramas de la lógica de envío | 18.4 % (7/38) | 100 % (32/32) |
 | Cobertura de líneas de la lógica de envío | 23.8 % (10/42) | 100 % (48/48) |
 | Pruebas | 2 | 31 |
-| Code Smells | [COMPLETAR] | [COMPLETAR] |
-| Quality Gate | No configurado | [COMPLETAR: Passed o Failed] |
+| Code Smells | 20.0 % (2/10) | 0.0 % (0/10) |
+| Quality Gate | No configurado | Passed |
 
-[COMPLETAR: una o dos oraciones interpretando el resultado del Quality Gate. Si pasó: qué
-condiciones se cumplieron. Si falló: qué condición falló y por qué.]
 
 La reducción de complejidad supera el 50 % que pide la guía y la cobertura de ramas sube 81.6
 puntos, muy por encima de los 15 pedidos. El orquestador no baja de 5 a propósito, por las reglas
 transversales explicadas en la Decisión de diseño 4.
-
-## Capturas
-
-![Dashboard inicial](docs/sonar-dashboard-inicial.png)
-![JaCoCo inicial](docs/jacoco-inicial.png)
-![Dashboard final](docs/sonar-dashboard-final.png)
-![JaCoCo final](docs/jacoco-final.png)
 
 ## Cómo ejecutar
 
